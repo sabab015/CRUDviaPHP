@@ -3,6 +3,7 @@ if (isset($_POST['submit'])) {
     $title = $_POST['title'];
     $description = $_POST['description'];
 
+    $title= mysqli_real_escape_string($connection, $title);
     $description= mysqli_real_escape_string($connection, $description);
 
     $query = "INSERT INTO content(title,description) ";
