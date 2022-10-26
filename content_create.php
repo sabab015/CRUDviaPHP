@@ -3,11 +3,19 @@ if (isset($_POST['submit'])) {
     $title = $_POST['title'];
     $description = $_POST['description'];
 
-    $title= mysqli_real_escape_string($connection, $title);
-    $description= mysqli_real_escape_string($connection, $description);
+    $title = mysqli_real_escape_string($connection, $title);
+    $description = mysqli_real_escape_string($connection, $description);
 
-    $query = "INSERT INTO content(title,description) ";
-    $query .= "VALUES('$title','$description')";
+
+    $fileName = $_FILES["image"]["name"];
+    
+    $tempname = $_FILES["image"]["tmp_name"];
+    $target_dir = "./images/".$fileName;
+    
+    move_uploaded_file($tempname, $target_dir);
+
+    $query = "INSERT INTO content(title,description,image) ";
+    $query .= "VALUES('$title','$description', '$fileName')";
     $result = mysqli_query($connection, $query);
 
     if (!$result) {
@@ -29,9 +37,10 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
+
     <div class="container">
         <h1 class="mt-5">Upload Your Contents</h1>
-        <form action="content_create.php" method="POST">
+        <form action="content_create.php" method="POST" enctype="multipart/form-data">
             <div class="form-group mt-5 font-weight-bold">
                 <label for="title">Title</label>
                 <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="Type your title here">
@@ -40,6 +49,11 @@ if (isset($_POST['submit'])) {
                 <label for="description">Description</label>
                 <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3" placeholder="Write your description here"></textarea>
             </div>
+            <div class="form-group mt-5 font-weight-bold">
+                <label for="title">Image</label>
+                <input type="file" name="image" class="form-control" id="exampleFormControlInput1" placeholder="Type your title here">
+            </div>
+
             <input class="btn btn-primary" type="submit" name="submit" value="Create">
         </form>
     </div>
