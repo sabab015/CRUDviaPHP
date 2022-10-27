@@ -1,34 +1,79 @@
-<?php
+<?php require_once("config.php");
+$id = $_GET['id']; ?>
+<!DOCTYPE html>
+<html>
 
-// $servername = "localhost";
-// $username = "root";
-// $password = "";
-// $dbname = "task";
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Image Upload and edit in PHP and MYSQL database</title>
+</head>
 
-// // Create connection
-// $conn = mysqli_connect($servername, $username, $password, $dbname);
-// // Check connection
-// if (!$conn) {
-//   die("Connection failed: " . mysqli_connect_error());
-// }
-// else{
-//     echo "ok";
-// }
+<body>
+    <?php
+    if (isset($_POST['update_submit'])) {
+        $title = $_POST['title'];
+        $folder = "uploads/";
+        $image_file = $_FILES['image']['name'];
+        $file = $_FILES['image']['tmp_name'];
+        $path = $folder . $image_file; // path = target_dir
+        $target_file = $folder . basename($image_file);
+        $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+     
+        if (!isset($error)) {
+            //file = tempName
+            if ($file!= '') {
+                $res = mysqli_query($db, "SELECT* from items WHERE id=$id limit 1");
+                if ($row = mysqli_fetch_array($res)) {
+                    $deleteimage = $row['image'];
+                }
+                unlink($folder . $deleteimage);
+                move_uploaded_file($file, $target_file);
+                //imageFile = image
+                $result = mysqli_query($db, "UPDATE items SET image='$image_file',title='$title' WHERE id=$id");
+            } else {
+                $result = mysqli_query($db, "UPDATE items SET title='$title' WHERE id=$id");
+            }
+            if ($result) {
+                header("location:index.php?action=saved");
+            } else {
+                echo 'Something went wrong';
+            }
+        }
+    }
 
-// if(isset($_POST['submit'])){
-//     $title = $_POST['title'];
-//     $description = $_POST['description'];
-// }
 
-// $sql = "INSERT INTO content (title, description)
-// VALUES ('".$title."', '".$description."')";
+    if (isset($error)) {
 
-// if (mysqli_query($conn, $sql)) {
-//   echo "New record created successfully";
-// } else {
-//   echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-// }
+        foreach ($error as $error) {
+            echo '<div class="message">' . $error . '</div><br>';
+        }
+    }
+    $res = mysqli_query($db, "SELECT* from items WHERE id=$id limit 1");
+    if ($row = mysqli_fetch_array($res)) {
+        $image = $row['image'];
+        $title = $row['title'];
+    }
+    ?>
+    <div class="container" style="width:500px;">
+        <h1> Edit </h1>
+        <?php if (isset($update_sucess)) {
+            echo '<div class="success">Image Updated successfully</div>';
+        } ?>
+        <form action="" method="POST" enctype="multipart/form-data">
+            <label>Image Preview </label><br>
+            <img src="uploads/<?php echo $image; ?>" height="100"><br>
+            <label>Change Image </label>
+            <input type="file" name="image" class="form-control">
+            <label>Title</label>
+            <input type="text" name="title" value="<?php echo $title; ?>" class="form-control">
+            <br><br>
+            <button name="update_submit" class="btn-primary">Update </button>
+        </form>
+    </div>
+</body>
 
-// mysqli_close($conn);
+</html>
 
 ?>

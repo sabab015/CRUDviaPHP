@@ -25,6 +25,7 @@ $row = mysqli_fetch_assoc($result);
         <h4>Update Record</h4>
         <?php
         if (isset($_POST['new']) && ($_POST['new']) == 1) {
+
             $id = $_REQUEST['id'];
             $title = $_REQUEST['title'];
             $description = $_REQUEST['description'];
@@ -32,22 +33,33 @@ $row = mysqli_fetch_assoc($result);
             $tempname = $_FILES["image"]["tmp_name"];
             $title = mysqli_real_escape_string($connection, $title);
             $description = mysqli_real_escape_string($connection, $description);
-            $target_dir = "./images/" . $image;
+            $folder = "./images/";
+            $target_file = $folder . basename($image);
+            $target_dir = $folder . $image;
 
             if ($tempname != "") {
-                move_uploaded_file($tempname, $target_dir);
-                // $img_update="update content set title='$title', description='$description' image='$image' where id='$id'";
-                $img_update = "update content set title='$title', description='$description', image= '$image' where id='$id'";
+
+                $res = mysqli_query($connection, "SELECT * from content WHERE id=$id limit 1");
+                if ($row = mysqli_fetch_array($res)) {
+                    $deleteimage = $row['image'];
+                }
+                unlink($folder . $deleteimage);
+                move_uploaded_file($tempname, $target_file);
+                //imageFile = image
+                $result = mysqli_query($connection, "UPDATE content SET image='$image',title='$title' WHERE id=$id");
+
+                // move_uploaded_file($tempname, $target_dir);
+                // $img_update = "update content set title='$title', description='$description', image= '$image' where id='$id'";
             } else {
-                $img_update = "update content set title='$title', description='$description' where id='$id'";
+                $result = "update content set title='$title', description='$description' where id='$id'";
             }
 
-            mysqli_query($connection, $img_update) or die(mysqli_error($connection));
+            // mysqli_query($connection, $image) or die(mysqli_error($connection));
 
 
 
             // $update = "UPDATE content set title='" . $title . "', description='" . $description . "' image='" . $image . "' where id='" . $id . "'";
-            // mysqli_query($connection, $update) or die(mysqli_error($connection));
+
         } else {
         ?>
             <div>

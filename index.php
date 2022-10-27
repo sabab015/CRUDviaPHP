@@ -37,11 +37,11 @@
                     <th scope="row"><?php echo $row['id'] ?></th>
                     <td><?php echo $row['title'] ?></td>
                     <td><?php echo $row['description'] ?></td>
-                    <td><img style="width: 100px; height: 50px" class="img-responsive" src="images/<?php echo $row['image'] ?>" alt=""></td>
+                    <td><img style="width: 150px; height: 75px" class="img-responsive" src="images/<?php echo $row['image'] ?>" alt=""></td>
 
                     <td>
                         <a class="btn btn-primary" href="edit.php?id=<?php echo $id; ?>">Edit</a>
-                        <a class="btn btn-danger" href="delete.php?id=<?php echo $id; ?>" class="btn btn-danger">Delete</a>
+                        <a class="btn btn-danger" href="delete.php?id=<?php echo $id ?>" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             <?php
