@@ -8,10 +8,10 @@ if (isset($_POST['submit'])) {
 
 
     $fileName = $_FILES["image"]["name"];
-    
+
     $tempname = $_FILES["image"]["tmp_name"];
-    $target_dir = "./images/".$fileName;
-    
+    $target_dir = "./images/" . $fileName;
+
     move_uploaded_file($tempname, $target_dir);
 
     $query = "INSERT INTO content(title,description,image) ";
@@ -39,6 +39,7 @@ if (isset($_POST['submit'])) {
 <body>
 
     <div class="container">
+        <p><a class="mt-5" href="index.php">Home Page</a>
         <h1 class="mt-5">Upload Your Contents</h1>
         <form action="content_create.php" method="POST" enctype="multipart/form-data">
             <div class="form-group mt-5 font-weight-bold">
