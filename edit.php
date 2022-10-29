@@ -19,7 +19,6 @@ $row = mysqli_fetch_assoc($result);
 </head>
 
 <body>
-
     <div class="form container m-5">
         <p><a href="index.php">Home Page</a>
         <h4>Update Record</h4>
@@ -27,8 +26,8 @@ $row = mysqli_fetch_assoc($result);
         if (isset($_POST['new']) && ($_POST['new']) == 1) {
 
             $id = $_REQUEST['id'];
-            $title = $_REQUEST['title'];
-            $description = $_REQUEST['description'];
+            $title = $_POST['title'];
+            $description = $_POST['description'];
             $image = $_FILES["image"]["name"];
             $tempname = $_FILES["image"]["tmp_name"];
             $title = mysqli_real_escape_string($connection, $title);
@@ -45,21 +44,11 @@ $row = mysqli_fetch_assoc($result);
                 }
                 unlink($folder . $deleteimage);
                 move_uploaded_file($tempname, $target_file);
-                //imageFile = image
-                $result = mysqli_query($connection, "UPDATE content SET image='$image',title='$title' WHERE id=$id");
 
-                // move_uploaded_file($tempname, $target_dir);
-                // $img_update = "update content set title='$title', description='$description', image= '$image' where id='$id'";
+                $result = mysqli_query($connection, "UPDATE content SET title='$title', description='$description', image='$image' WHERE id=$id");
             } else {
-                $result = "update content set title='$title', description='$description' where id='$id'";
+                $result = "UPDATE content SET title='$title', description='$description' where id='$id'";
             }
-
-            // mysqli_query($connection, $image) or die(mysqli_error($connection));
-
-
-
-            // $update = "UPDATE content set title='" . $title . "', description='" . $description . "' image='" . $image . "' where id='" . $id . "'";
-
         } else {
         ?>
             <div>

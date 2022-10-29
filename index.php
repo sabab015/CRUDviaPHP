@@ -29,9 +29,7 @@
         <tbody>
             <?php
             while ($row = mysqli_fetch_assoc($select_all_content_query)) {
-
                 $id = $row['id'];
-
             ?>
                 <tr>
                     <th scope="row"><?php echo $row['id'] ?></th>
@@ -48,7 +46,14 @@
             }
             ?>
         </tbody>
+
     </table>
+    <div class="container">
+        <h3>Add more data</h3>
+        <a class="btn btn-primary" href="content_create.php">Add</a>
+
+    </div>
+
 </body>
 
 </html>

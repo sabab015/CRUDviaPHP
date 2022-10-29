@@ -1,4 +1,4 @@
-<?php require_once("config.php");
+<!-- <?php require_once("config.php");
 $id = $_GET['id']; ?>
 <!DOCTYPE html>
 <html>
@@ -76,4 +76,4 @@ $id = $_GET['id']; ?>
 
 </html>
 
-?>
+?> -->
